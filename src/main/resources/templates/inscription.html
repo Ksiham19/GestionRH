@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/inscription.css">
+    <title>Inscription Candidat</title>
+</head>
+<body>
+<header>
+    <a href="#" class="logo"><span>So</span>1337</a>
+    <div class="menutoggle" onclick="toggleMenu();"></div>
+    <ul class="navbar">
+        <li><a th:href="@{/index}" onclick="toggleMenu();"><strong>Accueil</strong></a></li>
+        <li><a th:href="@{/index}" onclick="toggleMenu();"><strong>A propos</strong></a></li>
+        <li><a th:href="@{/index}" onclick="toggleMenu();"><strong>Concept</strong></a></li>
+        <li><a th:href="@{/index}" onclick="toggleMenu();"><strong>Contact</strong></a></li>
+    </ul>
+</header>
+
+<br>
+<br>
+<br>
+<br>
+<section class="inscription">
+    <div class="contenu">
+        <h2>Inscription Candidat</h2>
+        <form id="inscriptionForm" th:action="@{/page1/ajouterCandidat}" th:object="${candid}" method="POST" enctype="multipart/form-data">
+            <div class="inputboite">
+                <label for="cin">Cin <span class="required">*</span>:</label>
+                <input type="text" id="cin" name="cin" th:field="*{cin}" required>
+            </div>
+            <div class="inputboite">
+                <label for="nom">Nom <span class="required">*</span>:</label>
+                <input type="text" id="nom" name="nom" th:field="*{nom}" required>
+            </div>
+            <div class="inputboite">
+                <label for="prenom">Prénom <span class="required">*</span>:</label>
+                <input type="text" id="prenom" name="prenom" th:field="*{prenom}" required>
+            </div>
+            <div class="inputboite">
+                <label for="adresse">Adresse <span class="required">*</span>:</label>
+                <input type="text" id="adresse" name="adresse" th:field="*{adresse}"required>
+            </div>
+            <div class="inputboite">
+                <label for="telephone">Téléphone <span class="required">*</span>:</label>
+                <input type="tel" id="telephone" name="telephone" th:field="*{telephone}" required>
+            </div>
+
+            <div class="inputboite">
+                <label for="email">Email <span class="required">*</span>:</label>
+                <input type="email" id="email" name="email" th:field="*{email}"required>
+            </div>
+
+            <div class="inputboite">
+                <label for="mdp">Mot De Passe <span class="required">*</span>:</label>
+                <input type="password" id="mdp" name="mdp" th:field="*{mdp}" required>
+            </div>
+
+            <div class="inputboite">
+                <label for="confirmdp">Confirmer Mot De Passe <span class="required">*</span>:</label>
+                <input type="password" id="confirmdp" name="confirmdp" required>
+            </div>
+            <div class="inputboite">
+                <label for="competences">Compétences:</label>
+                <textarea id="competences" name="competences" required th:field="*{competences}"></textarea>
+                <div class="inputboite">
+                    <label for="image">Image:</label>
+                    <input type="file" id="file" name="file" accept="image/*" class="form-control-file">
+                </div>
+                <div class="inputboite">
+                    <label for="image">CV :</label>
+                    <input type="file" id="filecv" name="filecv" accept=".pdf,.doc,.docx" required>
+                </div>
+                <div class="inputboite">
+                    <label for="image">Lettre de motivation :</label>
+                    <input type="file" id="filelettreMotivation" name="filelettreMotivation" accept=".pdf,.doc,.docx" required>
+                </div>
+        </form>
+
+            <div class="inputboite">
+                <input type="submit" value="Envoyer">
+            </div>
+            </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function toggleMenu() {
+        const menutoggle = document.querySelector('.menutoggle');
+        const navbar = document.querySelector('.navbar');
+        menutoggle.classList.toggle('active');
+        navbar.classList.toggle('active');
+    }
+
+    function capturePhoto() {
+        const fileInput = document.getElementById('fileInput');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        console.log('Trying to capture photo...'); // Débogage
+
+        // Active la caméra
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                console.log('Camera access successful.'); // Débogage
+
+                const video = document.createElement('video');
+                video.autoplay = true;
+                video.srcObject = stream;
+
+                video.onloadedmetadata = function(e) {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    // Convertit le canvas en une image base64
+                    const photoData = canvas.toDataURL('image/jpeg');
+
+                    // Stocke les données de l'image dans un champ caché du formulaire
+                    document.getElementById('photoData').value = photoData;
+
+                    // Arrête le flux vidéo et libère la caméra
+                    stream.getVideoTracks()[0].stop();
+
+                    // Cache le canvas
+                    canvas.style.display = 'none';
+                    video.remove();
+                };
+            })
+            .catch(function(err) {
+                console.error('Erreur lors de l\'accès à la caméra: ', err);
+            });
+    }
+
+</script>
+
+</body>
+</html>

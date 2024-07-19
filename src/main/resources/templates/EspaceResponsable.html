@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/espaceResponsable.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>Espace Responsable</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            top: 0; /* Pour fixer la barre de menu en haut */
+            left: 0; /* Pour aligner la barre de menu à gauche */
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+        }
+
+        .main-content {
+            margin-left: 250px; /* Ajustez la marge pour laisser de la place à la barre de menu */
+            padding: 20px;
+            width: calc(100% - 250px); /* Ajustez la largeur pour tenir compte de la barre de menu fixe */
+        }
+
+        .main-content h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            width: 30%;
+        }
+
+        .stat-icon {
+            font-size: 2.5em;
+            color: #3498db;
+            margin-right: 20px;
+        }
+
+        .stat-info h3 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .stat-info p {
+            font-size: 2em;
+            color: #e74c3c;
+            margin: 0;
+        }
+        /* Styles supplémentaires pour le modal et autres éléments */
+        .modal-header {
+            background-color: indianred;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: indianred;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #b22222;
+        }
+
+        .form-control {
+            border-radius: 0;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        #changePasswordModal .modal-content {
+            border-radius: 0.5rem;
+            border: none;
+        }
+
+        #errorMessage {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Barre de menu à gauche -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+        </div>
+        <ul>
+            <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="/page1/GestionCandidatures"><i class="fas fa-users"></i> Gestion des candidatures</a></li>
+            <li><a href="/page1/GestionEmployees"><i class="fas fa-user-tie"></i> Gestion des employés</a></li>
+            <li><a href="/page1/offresEmploies"><i class="fas fa-user-tie"></i> Gestion des Offres D'Emploie</a></li>
+            <li><a href="/page1/GestionConge"><i class="fas fa-calendar-check"></i> Gestion des demandes de congé</a></li>
+            <li><a href="/page1/GestionFormations"><i class="fas fa-calendar-check"></i></i> Gestion des Formations</a></li>
+            <li><a href="/page1/BulettinPaie"><i class="fas fa-file-invoice"></i> Demandes Des Bulettins De Paie</a></li>
+            <li><a href="/page1/profiladmin"><i class="fas fa-user-circle"></i> Profil</a></li>
+            <li><a href="/page1/deconnecter"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i> Changer le mot de passe</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <h1>Tableau de bord</h1>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Candidatures</h3>
+                    <p id="nombreCandidatures" th:text="${nombreCandidatures}"></p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Employés</h3>
+                    <p id="nombreEmployes" th:text="${nombreEmploye}"></p>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Demandes de congé</h3>
+                    <p id="nombreDemandes" th:text="${nombreDemande}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour changer le mot de passe -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Changer le mot de passe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Mot de passe actuel</label>
+                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <div id="errorMessage" class="alert alert-danger d-none"></div>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">Valider</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+    function changePassword() {
+        var currentPassword = document.getElementById('currentPassword').value;
+        var newPassword = document.getElementById('newPassword').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var errorMessage = document.getElementById('errorMessage');
+
+        if (newPassword !== confirmPassword) {
+            errorMessage.textContent = 'Les nouveaux mots de passe ne correspondent pas.';
+            errorMessage.classList.remove('d-none');
+            return;
+        }
+
+        fetch('/page1/changePassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                currentPassword: currentPassword,
+                newPassword: newPassword
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Le mot de passe a été changé avec succès.');
+                    $('#changePasswordModal').modal('hide');
+                } else {
+                    errorMessage.textContent = data.message;
+                    errorMessage.classList.remove('d-none');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                errorMessage.textContent = 'Une erreur est survenue. Veuillez réessayer.';
+                errorMessage.classList.remove('d-none');
+            });
+    }
+</script>
+</body>
+</html>

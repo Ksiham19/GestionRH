@@ -1,0 +1,52 @@
+/* mdpchange.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+
+}
+
+.confirmation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url(../images/test.avif);
+    background-size: cover;
+
+}
+
+.confirmation-content {
+    text-align: center;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #ffffff;
+    max-width: 600px;
+    width: 80%;
+}
+
+.confirmation-content h2 {
+    color: indianred;
+}
+
+.confirmation-content p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.confirmation-content a {
+    display: inline-block;
+    background-color: indianred;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.confirmation-content a:hover {
+    background-color: #c85c5c;
+}

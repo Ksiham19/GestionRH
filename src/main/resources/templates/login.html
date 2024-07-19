@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/login.css">
+    <title>Login</title>
+</head>
+<body>
+<header>
+    <a href="/index" class="logo"><span>So</span>1337</a>
+</header>
+
+<div class="login-container">
+    <div class="login-content">
+        <div class="login-image">
+            <img src="../images/login.webp" alt="Photo">
+        </div>
+        <div class="login-form">
+            <h2>Login</h2>
+
+            <form action="/page1/EspaceDedie" method="POST">
+                <div class="input-box">
+                    <label for="username">Email <span class="required">*</span>:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-box">
+                    <label for="password">Mot de passe <span class="required">*</span>:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="input-box">
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+
+            <div class="forgot-password">
+                <a href="#" id="forgot-password-link">Mot de passe oublié ?</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulaire de réinitialisation de mot de passe -->
+<div id="reset-password-container" class="reset-password-container">
+    <div class="reset-password-content">
+        <h2>Réinitialiser le mot de passe</h2>
+        <form id="reset-password-form" action="/page1/resetPassword" method="POST">
+            <div class="input-box">
+                <label for="reset-email">Email <span class="required">*</span>:</label>
+                <input type="email" id="reset-email" name="email" required>
+            </div>
+            <div class="input-box">
+                <label for="reset-cin">CIN <span class="required">*</span>:</label>
+                <input type="text" id="reset-cin" name="cin" required>
+            </div>
+            <div class="input-box">
+                <label for="new-password">Nouveau mot de passe <span class="required">*</span>:</label>
+                <input type="password" id="new-password" name="newPassword" required>
+            </div>
+            <div class="input-box">
+                <label for="confirm-password">Confirmer le mot de passe <span class="required">*</span>:</label>
+                <input type="password" id="confirm-password" name="confirmPassword" required>
+            </div>
+            <div class="input-box">
+                <input type="submit" value="Réinitialiser">
+                <button><a th:href="@{/index}" class="btn1">Annuler</a></button>
+            </div>
+
+            <div id="error-message" class="error-message"></div>
+
+        </form>
+    </div>
+</div>
+
+<script src="../js/login.js">
+</script>
+</body>
+</html>

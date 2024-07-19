@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/acceuiloffre.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>Offres Emploi</title>
+
+</head>
+<body>
+<input type="hidden" id="candidatId" th:value="${candidat.idCandidat}">
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2>Menu</h2>
+    </div>
+    <ul>
+        <li><a href="#"><i class="fas fa-user-circle"></i> Profil</a></li>
+        <li><a href="/candidat/OffreEmploie"><i class="fas fa-users"></i> Offres Emploi</a></li>
+        <li><a href="/candidat/MesCandidatures"><i class="fas fa-user-tie"></i> Mes candidatures</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i> Changer le mot de passe</a></li>
+        <li><a href="/page1/deconnecter"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+    </ul>
+</div>
+
+<!-- Main content -->
+<div class="main-content">
+    <h1>Offres Emploi</h1>
+    <div class="row">
+        <input type="hidden" id="candidatId" value="${candidat.candidatId}">
+        <!-- Image 1 -->
+        <div class="col-md-3 img-box">
+            <img src="../images/cuisine.jpg" alt="Offre 1" onclick="window.location.href='/candidat/cuisine?id=' + encodeURIComponent(document.getElementById('candidatId').value)">
+        </div>
+        <!-- Image 2 -->
+        <div class="col-md-3 img-box">
+            <img src="../images/securite.png" alt="Offre 2" onclick="window.location.href='/candidat/securite?id=' + document.getElementById('candidatId').value">
+        </div>
+        <!-- Image 3 -->
+        <div class="col-md-3 img-box">
+            <img src="../images/staff.png" alt="Offre 3" onclick="window.location.href='/candidat/staff?id=' + document.getElementById('candidatId').value">
+        </div>
+        <!-- Image 4 -->
+        <div class="col-md-3 img-box">
+            <img src="../images/docteur.jpg" alt="Offre 4" onclick="window.location.href='/candidat/docteur?id=' + document.getElementById('candidatId').value">
+        </div>
+    </div>
+</div>
+
+<!-- Modal for changing password -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Changer le mot de passe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label for="currentPassword">Mot de passe actuel</label>
+                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <div id="errorMessage" class="alert alert-danger d-none"></div>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">Valider</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+    function changePassword() {
+        var currentPassword = document.getElementById('currentPassword').value;
+        var newPassword = document.getElementById('newPassword').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var candidatId = document.getElementById('candidatId').value;
+        // Retrieve candidate ID
+
+        if (newPassword !== confirmPassword) {
+            document.getElementById('errorMessage').innerText = "Les mots de passe ne correspondent pas.";
+            document.getElementById('errorMessage').classList.remove('d-none');
+        } else {
+            document.getElementById('errorMessage').classList.add('d-none');
+
+            // Send AJAX request to change password
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/employe/changePassword",
+                data: JSON.stringify({
+                    candidatId: candidatId,
+                    currentPassword: currentPassword,
+                    newPassword: newPassword
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        $('#changePasswordModal').modal('hide');
+                        alert('Mot de passe changé avec succès !');
+                    } else {
+                        document.getElementById('errorMessage').innerText = response.message;
+                        document.getElementById('errorMessage').classList.remove('d-none');
+                    }
+                },
+                error: function(error) {
+                    console.error('Erreur lors du changement de mot de passe : ', error);
+                    document.getElementById('errorMessage').innerText = "Une erreur s'est produite. Veuillez réessayer.";
+                    document.getElementById('errorMessage').classList.remove('d-none');
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

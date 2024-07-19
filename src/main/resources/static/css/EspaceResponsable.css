@@ -1,0 +1,128 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul li a i {
+    margin-right: 10px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #34495e;
+}
+
+.main-content {
+    margin-left: 300px;
+    padding: 20px;
+    width: calc(100% - 250px);
+}
+
+.main-content h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    width: 30%;
+}
+
+.stat-icon {
+    font-size: 2.5em;
+    color: #3498db;
+    margin-right: 20px;
+}
+
+.stat-info h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.stat-info p {
+    font-size: 2em;
+    color: #e74c3c;
+    margin: 0;
+}
+/* espaceResponsable.css */
+.modal-header {
+    background-color: indianred;
+    color: white;
+}
+
+.btn-primary {
+    background-color: indianred;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #b22222;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+#changePasswordModal .modal-content {
+    border-radius: 0.5rem;
+    border: none;
+}
+

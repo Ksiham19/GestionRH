@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter Employé - GestionRH</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/espaceResponsable.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            color: #566787;
+            margin: 0;
+            padding: 0;
+        }
+        .container-xl {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,.1);
+        }
+        .form-container {
+            padding: 20px;
+        }
+        .form-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2a4963;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #2a4963;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .form-control {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            width: calc(100% - 22px);
+        }
+        .form-control:focus {
+            border-color: indianred;
+            outline: none;
+            box-shadow: none;
+        }
+        .btn-primary {
+            background-color: indianred;
+            border-color: indianred;
+            border-radius: 5px;
+            padding: 12px 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #c12a2a;
+            border-color: #c12a2a;
+        }
+        .form-group.file-upload {
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .form-group.file-upload input[type=file] {
+            position: absolute;
+            font-size: 14px;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+        .form-group.file-upload label {
+            background-color: indianred;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px 20px;
+        }
+        .form-group.file-upload label:hover {
+            background-color: #c12a2a;
+        }
+    </style>
+</head>
+<body>
+<div class="container-xl">
+    <div class="form-container">
+        <div class="form-title">Ajouter un employé</div>
+        <form th:action="@{/page1/saveEmploye}" th:object="${employe}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="cin">CIN :</label>
+                <input type="text" id="cin" class="form-control" th:field="*{cin}" required>
+            </div>
+            <div class="form-group">
+                <label for="nom">Nom :</label>
+                <input type="text" id="nom" class="form-control" th:field="*{nom}" required>
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prénom :</label>
+                <input type="text" id="prenom" class="form-control" th:field="*{prenom}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email :</label>
+                <input type="email" id="email" class="form-control" th:field="*{email}" required>
+            </div>
+            <div class="form-group">
+                <label for="telephone">Téléphone :</label>
+                <input type="text" id="telephone" class="form-control" th:field="*{telephone}" required>
+            </div>
+            <div class="form-group">
+                <label for="adresse">Adresse :</label>
+                <input type="text" id="adresse" class="form-control" th:field="*{adresse}" required>
+            </div>
+            <div class="form-group">
+                <label for="dateEmbauche">Date d'embauche :</label>
+                <input type="text" id="dateEmbauche" class="form-control" th:field="*{dateEmbauche}" required placeholder="AAAA-MM-DD">
+            </div>
+            <div class="form-group">
+                <label for="image">Image :</label>
+                <input type="file" id="file" name="file" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="dateEmbauche">Competences :</label>
+                <input type="textarea" id="competences" class="form-control" th:field="*{competences}" required placeholder="AAAA-MM-DD">
+            </div>
+            <div class="form-group">
+                <label for="dateEmbauche">Salaire :</label>
+                <input type="text" id="salaire" class="form-control" th:field="*{salaire}" required placeholder="AAAA-MM-DD">
+            </div>
+            <div class="form-group">
+                <label for="dateEmbauche">Poste :</label>
+                <input type="text" id="poste" class="form-control" th:field="*{poste}" required placeholder="AAAA-MM-DD">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #2a4963; /* Couleur de fond modifiée */
+    padding: 15px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.sidebar-header {
+    color: #ffffff; /* Couleur du texte de l'en-tête */
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #ffffff; /* Couleur des liens */
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #1e2a38; /* Couleur de fond au survol */
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    padding: 15px;
+}
+
+/* Images */
+.img-box {
+    margin-bottom: 20px;
+}
+
+.img-box img {
+    width: 100%;
+    border-radius: 10px; /* Bordures arrondies pour les images */
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+.img-box img:hover {
+    transform: scale(1.05);
+    border: 2px solid #2a4963; /* Bordure au survol */
+}

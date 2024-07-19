@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'Employé</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .card {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            display: flex; /* Utilisation de flexbox pour la mise en page */
+            align-items: flex-start; /* Alignement des éléments en haut */
+        }
+        .card .left-section {
+            flex: 1; /* La section de gauche prendra autant d'espace que possible */
+            margin-right: 20px;
+        }
+        .card .left-section img {
+            max-width: 100%;
+            border-radius: 8px; /* Coins arrondis pour l'image */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card .right-section {
+            flex: 2; /* La section de droite prendra deux fois moins d'espace */
+        }
+        .card h2 {
+            font-size: 24px;
+            color: indianred;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 10px;
+        }
+        .card p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666666;
+            margin: 10px 0;
+        }
+        .card span {
+            font-weight: bold;
+            color: #000000; /* Couleur personnalisée pour les titres */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="right-section">
+            <h2>Détails de l'Employé</h2>
+            <div class="left-section">
+                <img th:src="@{'/images/' + ${employe.nomImage}}" alt="Photo de l'employé">
+            </div>
+            <div>
+                <p><span>CIN:</span> <span th:text="${employe.cin}"></span></p>
+                <p><span>Nom:</span> <span th:text="${employe.nom}"></span></p>
+                <p><span>Prénom:</span> <span th:text="${employe.prenom}"></span></p>
+                <p><span>Adresse:</span> <span th:text="${employe.adresse}"></span></p>
+                <p><span>Téléphone:</span> <span th:text="${employe.telephone}"></span></p>
+                <p><span>Email:</span> <span th:text="${employe.email}"></span></p>
+                <p><span>Date d'embauche:</span> <span th:text="${employe.dateEmbauche}"></span></p>
+                <p><span>Poste :</span> <span th:text="${employe.poste}"></span></p>
+                <p><span>Salaire :</span> <span th:text="${employe.salaire}"></span></p>
+                <p><span>Compétences:</span> <span th:text="${employe.competences}"></span></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <title>So1337</title>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo"><span>So</span>1337</a>
+        <div class="menutoggle" onclick="toggleMenu();"></div>
+        <ul class="navbar">
+            <li><a href="#banniere" onclick="toggleMenu();"><strong>Accueil</strong></a></li>
+            <li><a href="#apropos" onclick="toggleMenu();"><strong>A propos</strong></a></li>
+            <li><a href="#concept" onclick="toggleMenu();"><strong>Concept</strong></a></li>
+            <li><a href="#contact" onclick="toggleMenu();"><strong>Contact</strong></a></li>
+            <a th:href="@{/page1/login}" class="btn-login" onclick="toggleMenu();">Se connecter</a>
+        </ul>
+    </header>
+    <section class="banniere" id="banniere">
+        <div class="contenu">
+            <h2>Bienvenue chez So1337</h2>
+            <p><strong>Votre portail dédié pour une gestion des ressources humaines efficace.</strong></p>
+            <p>Que vous soyez candidat ou employé, accédez facilement à vos informations.</p>
+            <p>Inscrivez-vous pour découvrir nos solutions RH innovantes.</p>
+            <p>Recrutement, formation, gestion des employés : tout en un seul endroit.</p>
+            <p>Connectez-vous et simplifiez la gestion de vos processus RH dès aujourd'hui !</p>
+            <a th:href="@{/page1/inscription}" class="btn1">Inscription</a>
+            <a th:href="@{/page1/login}" class="btn2">Connexion</a>
+        </div>
+    </section>
+    <section class="apropos" id="apropos">
+        <div class="row">
+            <div class="col50">
+                <h2 class="titre-texte"><span>A </span>Propos De Nous</h2>
+                <p>1337, c’est la première formation en informatique par excellence au Maroc, entièrement gratuite, ouverte 24h/24 7j/7 et accessible à tous sans pré-requis de diplôme, ou de connaissance en informatique.. C’est une immersion complète dans un univers où le futur est déjà présent, où l’informatique et les lignes de codes sont plus qu’un concept flou et rébarbatif…
+                La pédagogie de Treize, Trente-Sept s’articule autour du peer-learning. Un fonctionnement participatif qui permet aux étudiants de libérer leur créativité grâce à l’apprentissage par projet. Pour former les futurs codeurs de demain, il fallait repenser l’apprentissage, faire de l’informatique quelque chose de ludique, de passionnant et aux antipodes de la vision restrictive que le grand public peut en avoir.
+                Treize, Trente-Sept utilise les méthodes techniques et pédagogiques de 42 Paris, élue meilleure école de code au monde par CodinGame.
+                Treize, Trente-Sept, une école du présent tournée vers le futur.</p>
+            </div>
+            <div class="col50">
+                <div >
+                    <img src="../images/1337.jpeg" alt="image">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="concept" id="concept">
+        <div class="row">
+            <div class="col50">
+                <h2 class="titre-texte"><span>C</span>oncept De Nous</h2>
+                <p>LE PEER-LEARNING, UN OBJET ÉDUCATIF PARFAITEMENT IDENTIFIÉ
+
+                    Aucun prof, aucun cours… Chez Treize, Trente-Sept vous êtes maître de votre apprentissage. Grâce au peer-learning, l’école est ouverte 24 h/24 et 7J/7. Vous pouvez venir à n’importe quelle heure du jour ou de la nuit, les week-ends et jours fériés inclus. Vous êtes en charge de votre réussite et de la réussite de vos camarades. Tout le cursus d’apprentissage se fait par la pratique et par les projets. Pas de cours académique où l’attention n’est vraiment soutenue que 10 minutes sur 60. Pour progresser, vous ne pouvez compter que sur vous-même et sur la force du groupe. Vous devez donner, mais aussi recevoir, vous êtes à la fois formateur et apprenti. Le peer-learning abolit les frontières entre étudiants et professeurs. Ce n’est qu’ensemble que la formation est un succès..</p>
+            </div>
+            <div class="col50">
+                <div >
+                    <img src="../images/peer-assessment.jpg" alt="image">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="contact" id="contact">
+        <div class="titre noir">
+            <h2 class="titre-texte"><center><span>C</span>ontact</center></h2>
+        </div>
+        <div class="contactform">
+            <h3>Envoyer un message</h3>
+            <div class="inputboite">
+               <input type="text" placeholder="Nom">
+            </div>
+            <div class="inputboite">
+                <input type="text" placeholder="email">
+            </div>
+            <div class="inputboite">
+                <textarea placeholder="message"></textarea>
+            </div>
+            <div class="inputboite">
+                <input type="submit" value="Envoyer">
+            </div>
+        </div>
+    </section>
+    <div class="copyright">
+        <p>copyright 2024 . Tous droits reservés</p>
+    </div>
+    <script type="text/javascript">
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            header.classList.toggle("sticky", window.scrollY > 0);
+        });
+
+        function toggleMenu() {
+            const menutoggle = document.querySelector('.menutoggle');
+            const navbar = document.querySelector('.navbar');
+            menutoggle.classList.toggle('active');
+            navbar.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
