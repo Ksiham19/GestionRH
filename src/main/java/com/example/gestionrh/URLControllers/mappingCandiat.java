@@ -24,11 +24,11 @@ public class mappingCandiat {
     OffreEmploiService offreEmploiService;
     ResponsableRHService responsableRHService;
 
-    public mappingCandiat(ResponsableRHService responsableRHService,CandidatService candidatService,OffreEmploiService offreEmploiService,CandidatureService candidatureService){
-        this.candidatService=candidatService;
-        this.offreEmploiService=offreEmploiService;
-        this.candidatureService=candidatureService;
-        this.responsableRHService=responsableRHService;
+    public mappingCandiat(ResponsableRHService responsableRHService, CandidatService candidatService, OffreEmploiService offreEmploiService, CandidatureService candidatureService) {
+        this.candidatService = candidatService;
+        this.offreEmploiService = offreEmploiService;
+        this.candidatureService = candidatureService;
+        this.responsableRHService = responsableRHService;
     }
 
     @GetMapping("/OffreEmploie")
@@ -47,7 +47,7 @@ public class mappingCandiat {
             if (candidat != null) {
                 List<Candidature> candidatures = candidat.getCandidatures();
                 model.addAttribute("candidatures", candidatures);
-                model.addAttribute("candidat",candidat);
+                model.addAttribute("candidat", candidat);
             } else {
                 model.addAttribute("error", "Candidat non trouvé");
             }
@@ -73,8 +73,9 @@ public class mappingCandiat {
     public String securite(@RequestParam(name = "id", required = false) Long candidatId, Model model) {
         List<OffreEmploi> resultats = offreEmploiService.getOffresByType("securite");
         // Optional: Use the candidatId if needed
-        if (candidatId != null) {
-            model.addAttribute("candidatId", candidatId);
+        Optional<Candidat> candidat = candidatService.getCandidatById(candidatId);
+        if (candidat != null) {
+            model.addAttribute("candidat", candidat);
         }
 
         model.addAttribute("resultats", resultats);
@@ -131,6 +132,9 @@ public class mappingCandiat {
             candidatureService.createCandidature(candidature);
 
             model.addAttribute("message", "Votre candidature a été envoyée avec succès.");
+            List<Candidature> candidatures = candidat.getCandidatures();
+            model.addAttribute("candidatures", candidatures);
+            model.addAttribute("candidat", candidat);
             return "MesCondidatuespourCandidat";
         } else {
             model.addAttribute("error", "Erreur: Candidat ou Offre d'emploi non trouvée.");
@@ -138,21 +142,24 @@ public class mappingCandiat {
         }
     }
 
-
-    @GetMapping("/detailmacandidature/{id}")
-    public String detailmacandidature(@PathVariable Long id, Model model) {
-        Candidature candidature = candidatureService.getCandidatureById(id).orElse(null);
-        if (candidature != null) {
-            Candidat candidat = candidature.getCandidat();
-            model.addAttribute("candidature", candidature);
-            model.addAttribute("candidat", candidat);
-            return "CandidatureDetails";
-        } else {
-            return "redirect:/GestionCandidatures";
+    @GetMapping("/annuler/{id}")
+    public String annulerCandidature(@PathVariable Long id,
+                                     @RequestParam(name = "candidatId") Long candidatId,
+                                     Model model) {
+        boolean isDeleted = candidatureService.annulerCandidature(id);
+        if (isDeleted) {
+            Optional<Candidat> candidatOpt = candidatService.getCandidatById(candidatId);
+            if (candidatOpt.isPresent()) {
+                Candidat candidat = candidatOpt.get();
+                List<Candidature> candidatures = candidat.getCandidatures();
+                model.addAttribute("candidatures", candidatures);
+                model.addAttribute("candidat", candidat);
+                return "MesCondidatuespourCandidat"; // Assurez-vous que le nom de la vue est correct
+            }
         }
+        model.addAttribute("errorMessage", "Erreur lors de l'annulation de la candidature");
+        return "error"; // Assurez-vous qu'il y a une vue error pour afficher les messages d'erreur
     }
-
-
 
 }
 

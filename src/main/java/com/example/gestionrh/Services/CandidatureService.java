@@ -23,7 +23,7 @@ public class CandidatureService {
     public Optional<Candidature> getCandidatureById(Long id) {
         return repository.findById(id);
     }
-    
+
     public Candidature createCandidature(Candidature candidature) {
         return repository.save(candidature);
     }
@@ -81,6 +81,15 @@ public class CandidatureService {
         candidature.setStatutCandidature("refuse");
         repository.save(candidature);
 
+    }
+
+    public boolean annulerCandidature(Long id) {
+        try {
+            repository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

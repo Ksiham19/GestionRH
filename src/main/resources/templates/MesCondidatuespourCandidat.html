@@ -29,10 +29,10 @@
             color: #fff;
             padding: 20px;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            z-index: 1000; /* Ensure it is above other content */
+            z-index: 1000;
         }
         .container-xl {
-            margin-left: 250px; /* Same width as the sidebar */
+            margin-left: 250px;
             padding: 20px;
         }
         .table-responsive {
@@ -110,32 +110,6 @@
             display: inline-block;
             margin: 0 5px;
         }
-        .sidebar {
-            width: 250px;
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 20px;
-            height: 100vh;
-            position: fixed;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            top: 0;
-            left: 0;
-            z-index: 1000; /* Ensures sidebar is above other content */
-        }
-
-        .sidebar-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin: 20px 0;
-        }
         table.table td a.view {
             color: #03A9F4;
         }
@@ -152,7 +126,6 @@
             float: right;
             margin: 0 0 5px;
         }
-
         .pagination li a {
             border: none;
             font-size: 95%;
@@ -201,7 +174,6 @@
             $('.search-box input[type="text"]').on('keyup', function(){
                 var input = $(this).val().toLowerCase();
                 $('tbody tr').filter(function(){
-                    // Check if the input matches the dateSoumission column (5th column)
                     $(this).toggle($(this).find('td').eq(4).text().toLowerCase().indexOf(input) > -1);
                 });
             });
@@ -216,11 +188,11 @@
         <h2>Menu</h2>
     </div>
     <ul>
-        <li><a href="#"><i class="fas fa-user-circle"></i> Profil</a></li>
-        <li><a th:href="@{/candidat/OffreEmploie(id=${candidat.idCandidat})}"><i class="fas fa-users"></i> Offres Emploi</a></li>
-        <li><a th:href="@{/candidat/MesCandidatures(id=${candidat.idCandidat})}"><i class="fas fa-user-tie"></i> Mes candidatures</a></li>
-        <li><a href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i> Changer le mot de passe</a></li>
-        <li><a href="/page1/deconnecter"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+        <li><a href="#"><i class="fas fa-user-circle"></i>Profil</a></li>
+        <li><a href="/candidat/OffreEmploie"><i class="fas fa-users"></i>Offres Emploi</a></li>
+        <li><a href="/candidat/MesCandidatures"><i class="fas fa-user-tie"></i>Mes candidatures</a></li>
+        <li><a href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i>Changer le mot de passe</a></li>
+        <li><a href="/page1/deconnecter"><i class="fas fa-sign-out-alt"></i>Déconnexion</a></li>
     </ul>
 </div>
 <div class="container-xl">
@@ -245,6 +217,7 @@
                     <th>Description</th>
                     <th>Statut Candidature</th>
                     <th>Date de Soumission</th>
+                    <th>Action</th> <!-- Colonne d'action ajoutée -->
                 </tr>
                 </thead>
                 <tbody>
@@ -254,11 +227,17 @@
                     <td th:text="${candidature.offreEmploi.description}"></td>
                     <td th:text="${candidature.statutCandidature}"></td>
                     <td th:text="${candidature.dateSoumission}"></td>
+                    <td>
+                        <!-- Lien pour annuler la candidature -->
+                        <a th:href="@{/candidat/annuler/{id}(id=${candidature.idCandidature}, candidatId=${candidature.candidat.idCandidat})}" class="delete" title="Annuler" data-toggle="tooltip"><i class="fas fa-times"></i></a>
+                    </td>
+                    <input type="hidden" id="candidatId" value="${candidature.candidat.candidatId}">
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
 </body>
 </html>
