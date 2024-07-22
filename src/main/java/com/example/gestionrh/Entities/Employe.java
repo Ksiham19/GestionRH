@@ -42,4 +42,6 @@ public class Employe {
 
     @OneToMany(mappedBy = "employe")
     private List<BulletinPaie> bulletinsPaie;
+
+
 }

@@ -1,8 +1,11 @@
 package com.example.gestionrh.Services;
+import com.example.gestionrh.Entities.Employe;
 import com.example.gestionrh.Entities.Notification;
 import com.example.gestionrh.Repositories.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +14,21 @@ import java.util.Optional;
 public class NotifiacationService {
     @Autowired
     private NotificationRepository repository;
+    @Autowired
+    private JavaMailSender mailSender;
 
     public List<Notification> getAllNotifications() {
         return repository.findAll();
+    }
+
+
+    public void envoyerNotificationEmploye(Employe employe, String bulletin) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(employe.getEmail());
+        message.setSubject("Votre Bulletin de Paie est Prêt");
+        message.setText("Votre bulletin de paie pour le mois/année a été généré. Veuillez le télécharger depuis votre espace employé.");
+
+        mailSender.send(message);
     }
 
     public Optional<Notification> getNotificationById(Long id) {

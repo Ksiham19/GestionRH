@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:href="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,15 +13,15 @@
     <div class="content">
         <h1>Demande de Congé</h1>
         <div class="employee-info">
-
             <p><strong>ID Employé:</strong> <span id="employeeId" th:text="${employee.idEmploye}"></span></p>
-            <p><strong>Nom:</strong> <span  th:text="${employee.nom}"></span></p>
+            <p><strong>Nom:</strong> <span th:text="${employee.nom}"></span></p>
             <p><strong>Prénom:</strong> <span th:text="${employee.prenom}"></span></p>
             <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
             <p><strong>Téléphone:</strong> <span th:text="${employee.telephone}"></span></p>
             <p><strong>Poste:</strong> <span th:text="${employee.poste}"></span></p>
         </div>
-        <form id="leaveRequestForm">
+        <form id="leaveRequestForm" action="/employe/envoyer" method="post">
+            <input type="hidden" id="employeeIdd" name="employeeIdd" th:value="${employee.idEmploye}">
             <div class="form-group">
                 <label for="dateDebut">Date de Début:</label>
                 <input type="date" class="form-control" id="dateDebut" name="dateDebut" required>
@@ -34,7 +34,7 @@
                 <label for="reason">Motif:</label>
                 <textarea class="form-control" id="reason" name="reason" rows="4" required></textarea>
             </div>
-            <button type="button" class="btn btn-primary" onclick="submitRequest()">Envoyer la demande</button>
+            <button type="submit" class="btn btn-primary">Envoyer la demande</button>
             <button type="button" class="btn btn-secondary" onclick="downloadPDF()">Télécharger en PDF</button>
         </form>
     </div>

@@ -1,23 +1,19 @@
 package com.example.gestionrh.URLControllers;
 
-import com.example.gestionrh.Entities.Candidat;
-import com.example.gestionrh.Entities.Candidature;
-import com.example.gestionrh.Entities.Employe;
-import com.example.gestionrh.Entities.ResponsableRH;
+import com.example.gestionrh.Entities.*;
 import com.example.gestionrh.Services.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/page1")
@@ -26,14 +22,17 @@ public class controllermapping {
     EmployeService employeService;
     ResponsableRHService responsableRHService;
     CandidatureService candidatureService;
+    EntretienService entretienService;
     DemandeDeCongeService demandeDeCongeService;
 
-    public controllermapping(CandidatService candidatService, EmployeService employeService, ResponsableRHService responsableRHService ,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
+    public controllermapping(CandidatService candidatService,
+                             EntretienService entretienService,EmployeService employeService, ResponsableRHService responsableRHService ,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
         this.candidatService=candidatService;
         this.employeService=employeService;
         this.responsableRHService=responsableRHService;
         this.candidatureService=candidatureService;
         this.demandeDeCongeService=demandeDeCongeService;
+        this.entretienService=entretienService;
     }
 
 
@@ -270,6 +269,27 @@ public class controllermapping {
         return "GestionCandidatures";
     }
 
+
+    @GetMapping("/GestionConge")
+    public String GestionConge(Model model) {
+        List<DemandeDeConge> demandes = demandeDeCongeService.getDemandesByStatut("En attente");
+        model.addAttribute("demandes", demandes);
+        return "ListeDemandeConge";
+    }
+
+    @GetMapping("/GestionConge/{id}")
+    public String getdemandedetails(@PathVariable Long id, Model model) {
+        DemandeDeConge demande = demandeDeCongeService.getDemandeById(id).orElse(null);
+        if (demande != null) {
+            Employe employe = demande.getEmploye();
+            model.addAttribute("demande", demande);
+            model.addAttribute("employe", employe);
+            return "DemandeDeatilRH";
+        } else {
+            return "redirect:/GestionConge";
+        }
+    }
+
     @GetMapping("/GestionCandidatures/{id}")
     public String getCandidatureDetails(@PathVariable Long id, Model model) {
         Candidature candidature = candidatureService.getCandidatureById(id).orElse(null);
@@ -321,6 +341,38 @@ public class controllermapping {
         candidatureService.refuserCandidature(id);
         return "redirect:/page1/GestionCandidatures";
     }
+
+    @PostMapping("/scheduleInterview")
+    public String scheduleInterview(@RequestParam("idCandidature") Long idCandidature,
+                                                    @RequestParam("interviewDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEntretien,
+                                                    @RequestParam("interviewLocation") String lieu,
+                                                    @RequestParam("interviewNotes") String feedback) {
+        try {
+            Long responsableId = 1L; // ID du Responsable RH, changez-le selon vos besoins
+            Optional<Candidature> candidatureOptional = candidatureService.getCandidatureById(idCandidature);
+            Optional<ResponsableRH> responsableRHOptional = responsableRHService.getResponsableById(responsableId);
+
+            if (!candidatureOptional.isPresent() || !responsableRHOptional.isPresent()) {
+                return ("Candidature ou Responsable RH non trouvé.");
+            }
+
+            Candidature candidature = candidatureOptional.get();
+            ResponsableRH responsableRH = responsableRHOptional.get();
+
+            Entretien entretien = new Entretien();
+            entretien.setDateEntretien(dateEntretien);
+            entretien.setCandidature(candidature);
+            entretien.setResponsableRH(responsableRH);
+            entretien.setLieu(lieu);
+            entretien.setFeedback(feedback);
+
+            entretienService.createEntretien(entretien);
+            return "redirect:/page1/GestionCandidatures";
+        } catch (Exception e) {
+            return ("Erreur lors de la planification de l'entretien.");
+        }
+    }
+
 
 }
 

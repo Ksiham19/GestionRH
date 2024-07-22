@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to handle form submission
     function submitRequest() {
         const formData = {
-            employeId: document.getElementById('employeeId').innerText.trim(),
+            employeeId: document.getElementById('employeeId').innerText.trim(),
             dateDebut: document.getElementById('dateDebut').value,
             dateFin: document.getElementById('dateFin').value,
             reason: document.getElementById('reason').value
@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function() {
         $.ajax({
             type: "POST",
             url: "/employe/demandeConge",
-            contentType: "application/json",
-            data: JSON.stringify(formData),
+            contentType: "application/x-www-form-urlencoded",
+            data: formData,  // Send data as URL-encoded
             success: function(response) {
                 alert('Demande envoyée avec succès!');
             },
@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
         doc.save('demande_de_conge.pdf');
     }
 
-    document.querySelector('button[onclick="submitRequest()"]').addEventListener('click', submitRequest);
-    document.querySelector('button[onclick="downloadPDF()"]').addEventListener('click', downloadPDF);
+    // Add event listeners to buttons
+    document.querySelector('button.btn-primary').addEventListener('click', submitRequest);
+    document.querySelector('button.btn-secondary').addEventListener('click', downloadPDF);
 });

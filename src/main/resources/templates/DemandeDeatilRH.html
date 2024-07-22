@@ -120,8 +120,8 @@
             <li><a href="/page1/GestionCandidatures"><i class="fas fa-users"></i> Gestion des candidatures</a></li>
             <li><a href="/page1/GestionEmployees"><i class="fas fa-user-tie"></i> Gestion des employés</a></li>
             <li><a href="/page1/GestionConge"><i class="fas fa-calendar-check"></i> Gestion des demandes de congé</a></li>
-            <li><a href="/page1/GestionFormations"><i class="fas fa-calendar-check"></i> Gestion des Formations</a></li>
-            <li><a href="/page1/BulletinPaie"><i class="fas fa-file-invoice"></i> Demandes Des Bulletins De Paie</a></li>
+            <li><a href="/page1/GestionFormations"><i class="fas fa-calendar-check"></i></i> Gestion des Formations</a></li>
+            <li><a href="/page1/BulettinPaie"><i class="fas fa-file-invoice"></i> Demandes Des Bulettins De Paie</a></li>
             <li><a href="/page1/profiladmin"><i class="fas fa-user-circle"></i> Profil</a></li>
             <li><a href="/page1/deconnecter"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
             <li><a href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i> Changer le mot de passe</a></li>
@@ -132,53 +132,15 @@
     <div class="main-content">
         <div class="details-container">
             <h2>Détails de la candidature</h2>
-            <img th:if="${candidat.photo != null}" th:src="@{'/images/' + ${candidat.nomphoto}}" alt="Image du candidat">
-            <p>Nom : <span th:text="${candidat.nom}"></span></p>
-            <p>Prénom : <span th:text="${candidat.prenom}"></span></p>
-            <p>Email : <span th:text="${candidat.email}"></span></p>
-            <p>Statut de la candidature : <span th:text="${candidature.statutCandidature}"></span></p>
-            <p>Date de soumission : <span th:text="${#dates.format(candidature.dateSoumission, 'dd/MM/yyyy')}"></span></p>
-            <p>Compétences : <span th:text="${candidat.competences}"></span></p>
-            <p>CV : <a th:href="@{/api/candidats/download/cv/{id}(id=${candidat.idCandidat})}" download>Télécharger le CV</a></p>
-            <p>Lettre de motivation : <a th:href="@{/api/candidats/download/lettreMotivation/{id}(id=${candidat.idCandidat})}" download>Télécharger la lettre de motivation</a></p>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#scheduleInterviewModal">Planifier un entretien</button>
-        </div>
-    </div>
-</div>
+            <td>
+                <!-- Display the employee's image if available -->
+                <img th:if="${employe.image != null}" th:src="@{'/images/' + ${employe.nomImage}}" alt="Employee Image" style="max-width: 100px; max-height: 100px;">
+            </td>
+            <p>Nom : <span th:text="${employe.nom}"></span></p>
+            <p>Prénom : <span th:text="${employe.prenom}"></span></p>
+            <p>Email : <span th:text="${employe.email}"></span></p>
 
-<!-- Modal pour planifier un entretien -->
-<div class="modal fade" id="scheduleInterviewModal" tabindex="-1" role="dialog" aria-labelledby="scheduleInterviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="scheduleInterviewModalLabel">Planifier un entretien</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="scheduleInterviewForm">
-                    <input type="hidden" name="idCandidature" id="idCandidature" th:value="${candidature.idCandidature}">
-                    <div class="form-group">
-                        <label for="interviewDate">Date de l'entretien</label>
-                        <input type="date" class="form-control" id="interviewDate" name="interviewDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="interviewTime">Heure de l'entretien</label>
-                        <input type="time" class="form-control" id="interviewTime" name="interviewTime" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="interviewLocation">Lieu de l'entretien</label>
-                        <input type="text" class="form-control" id="interviewLocation" name="interviewLocation" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="interviewNotes">Remarques supplémentaires</label>
-                        <textarea class="form-control" id="interviewNotes" name="interviewNotes" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Planifier</button>
-                    <div id="errorMessage" class="alert alert-danger d-none mt-2"></div>
-                </form>
-            </div>
+
         </div>
     </div>
 </div>
@@ -207,8 +169,8 @@
                         <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Changer</button>
-                    <div id="changePasswordErrorMessage" class="alert alert-danger d-none mt-2"></div>
+                    <div id="errorMessage" class="alert alert-danger d-none"></div>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">Valider</button>
                 </form>
             </div>
         </div>
@@ -216,38 +178,36 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script>
-    document.getElementById('scheduleInterviewForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var interviewDate = document.getElementById('interviewDate').value;
-        var interviewTime = document.getElementById('interviewTime').value;
-        var interviewLocation = document.getElementById('interviewLocation').value;
-        var interviewNotes = document.getElementById('interviewNotes').value;
-        var idCandidature = document.getElementById('idCandidature').value;
+    function changePassword() {
+        var currentPassword = document.getElementById('currentPassword').value;
+        var newPassword = document.getElementById('newPassword').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
         var errorMessage = document.getElementById('errorMessage');
 
-        // Convert form data to URL encoded string
-        var formData = new URLSearchParams();
-        formData.append('idCandidature', idCandidature);
-        formData.append('interviewDate', interviewDate);
-        formData.append('interviewTime', interviewTime);
-        formData.append('interviewLocation', interviewLocation);
-        formData.append('interviewNotes', interviewNotes);
+        if (newPassword !== confirmPassword) {
+            errorMessage.textContent = 'Les nouveaux mots de passe ne correspondent pas.';
+            errorMessage.classList.remove('d-none');
+            return;
+        }
 
-        fetch('/page1/scheduleInterview', {
+        fetch('/page1/changePassword', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: formData.toString(),
+            body: JSON.stringify({
+                currentPassword: currentPassword,
+                newPassword: newPassword
+            }),
         })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('L\'entretien a été planifié avec succès.');
-                    $('#scheduleInterviewModal').modal('hide');
+                    alert('Le mot de passe a été changé avec succès.');
+                    $('#changePasswordModal').modal('hide');
                 } else {
                     errorMessage.textContent = data.message;
                     errorMessage.classList.remove('d-none');
@@ -256,7 +216,7 @@
             .catch((error) => {
                 console.error('Error:', error);
             });
-    });
+    }
 </script>
 </body>
 </html>
