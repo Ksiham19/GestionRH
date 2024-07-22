@@ -243,7 +243,7 @@
                     <td th:text="${candidature.statutCandidature}"></td>
                     <td class="action-icons">
                             <a th:href="@{/page1/GestionCandidatures/{id}(id=${candidature.idCandidature})}"  class="view" title="View" data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
-                            <a th:href="@{/page1/accepterCandidature/{id}(id=${candidature.idCandidature})}" method="post" title="Accepter" class="accept" data-toggle="tooltip"><i class="fas fa-check-circle"></i></a>
+                            <a th:href="@{/page1/accepterCandidature/{id}(id=${candidature.idCandidature})}" method="GET" title="Accepter" class="accept" data-toggle="tooltip"><i class="fas fa-check-circle"></i></a>
                             <a th:href="@{/page1/refuserCandidature/{id}(id=${candidature.idCandidature})}"  title="Refuser" class="reject" data-toggle="tooltip"><i class="fas fa-times-circle"></i></a>
                     </td>
                 </tr>

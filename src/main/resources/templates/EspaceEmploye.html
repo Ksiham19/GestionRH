@@ -157,7 +157,7 @@
         </div>
         <ul>
             <li><a href="/employe/profil"><i class="fas fa-user-circle"></i> Profil</a></li>
-            <li><a href="/employe/DemandeConge"><i class="fas fa-users"></i> Demandes De Conges</a></li>
+            <li><a th:href="@{/employe/DemandeConge(id=${employee.idEmploye})}"><i class="fas fa-users"></i> Demandes De Conges</a></li>
             <li><a href="/employe/DemandeBulletinPaie"><i class="fas fa-user-tie"></i> Demandes Bulettein Paie</a></li>
             <li><a href="/employe/Formation"><i class="fas fa-calendar-check"></i> Espace Formation</a></li>
             <li><a href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i> Changer le mot de passe</a></li>

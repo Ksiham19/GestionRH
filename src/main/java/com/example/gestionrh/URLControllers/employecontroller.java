@@ -6,6 +6,7 @@ import com.example.gestionrh.Services.EmployeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -44,4 +45,16 @@ public class employecontroller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
+
+    @GetMapping("/DemandeConge")
+    public String DemandeConge(@RequestParam("id") Long id, Model model) {
+        Optional<Employe> employe = employeService.getEmployeById(id);
+        if (employe.isEmpty()) {
+            throw new RuntimeException("Employé introuvable avec l'ID : " + id);
+        }
+        model.addAttribute("employee", employe.get());
+        return "DemandeConge";
+    }
+
 }

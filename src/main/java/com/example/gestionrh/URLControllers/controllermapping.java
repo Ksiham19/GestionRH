@@ -310,7 +310,7 @@ public class controllermapping {
         return "EspaceCandidat";
     }
 
-    @PostMapping("/accepterCandidature/{id}")
+    @GetMapping("/accepterCandidature/{id}")
     public String accepterCandidature(@PathVariable Long id) {
         candidatureService.accepterCandidature(id);
         return "redirect:/page1/GestionCandidatures";

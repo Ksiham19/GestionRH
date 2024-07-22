@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/leaveRequest.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>Demande de Congé</title>
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h1>Demande de Congé</h1>
+        <div class="employee-info">
+
+            <p><strong>ID Employé:</strong> <span id="employeeId" th:text="${employee.idEmploye}"></span></p>
+            <p><strong>Nom:</strong> <span  th:text="${employee.nom}"></span></p>
+            <p><strong>Prénom:</strong> <span th:text="${employee.prenom}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${employee.email}"></span></p>
+            <p><strong>Téléphone:</strong> <span th:text="${employee.telephone}"></span></p>
+            <p><strong>Poste:</strong> <span th:text="${employee.poste}"></span></p>
+        </div>
+        <form id="leaveRequestForm">
+            <div class="form-group">
+                <label for="dateDebut">Date de Début:</label>
+                <input type="date" class="form-control" id="dateDebut" name="dateDebut" required>
+            </div>
+            <div class="form-group">
+                <label for="dateFin">Date de Fin:</label>
+                <input type="date" class="form-control" id="dateFin" name="dateFin" required>
+            </div>
+            <div class="form-group">
+                <label for="reason">Motif:</label>
+                <textarea class="form-control" id="reason" name="reason" rows="4" required></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="submitRequest()">Envoyer la demande</button>
+            <button type="button" class="btn btn-secondary" onclick="downloadPDF()">Télécharger en PDF</button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script src="../js/leaveRequest.js"></script>
+</body>
+</html>
