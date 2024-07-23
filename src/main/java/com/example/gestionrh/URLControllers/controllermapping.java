@@ -13,6 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -25,11 +28,14 @@ public class controllermapping {
     EntretienService entretienService;
     DemandeDeCongeService demandeDeCongeService;
     NotifiacationService notifiacationService;
+    OffreEmploiService offreEmploiService;
 
     public controllermapping(CandidatService candidatService,
                              EntretienService entretienService,
                              NotifiacationService notifiacationService,
-                             EmployeService employeService, ResponsableRHService responsableRHService ,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
+                             EmployeService employeService,
+                             OffreEmploiService offreEmploiService,
+                             ResponsableRHService responsableRHService ,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
         this.candidatService=candidatService;
         this.employeService=employeService;
         this.responsableRHService=responsableRHService;
@@ -37,6 +43,7 @@ public class controllermapping {
         this.demandeDeCongeService=demandeDeCongeService;
         this.entretienService=entretienService;
         this.notifiacationService=notifiacationService;
+        this.offreEmploiService=offreEmploiService;
     }
 
 
@@ -392,6 +399,62 @@ public class controllermapping {
     }
 
 
+    @GetMapping("/offresEmploies")
+    public String gestionOffresEmploies(Model model) {
+        // Ajoutez ici la logique pour récupérer les offres d'emploi depuis la base de données
+        List<OffreEmploi> offres = offreEmploiService.getAllOffres(); // Assurez-vous d'avoir cette méthode dans votre service
+        model.addAttribute("offres", offres);
+        return "offresEmploies"; // Le nom de la vue HTML pour la gestion des offres d'emploi
+    }
 
-}
+    @GetMapping("/ajouteroffreemploi")
+    public String showAddOffreEmploiForm(Model model) {
+        model.addAttribute("offreEmploi", new OffreEmploi());
+        return "page1/ajouteroffreemploi"; // Corrected template name
+    }
+
+
+    @PostMapping("/ajouteroffreemploi")
+    public Map<String, Object> addOffre(
+            @RequestParam("titre")String titre,
+            @RequestParam("description")String description,
+            @RequestParam("competencesRequises")String competencesRequises,
+            @RequestParam("statut")String statut,
+            @RequestParam("type")String type,
+            @RequestParam("file") MultipartFile file) throws IOException {
+
+        OffreEmploi offre=new OffreEmploi();
+        Map<String, Object> response = new HashMap<>();
+        offre.setTitre(titre);
+        offre.setDescription(description);
+        //offre.setDatePublication(datePublication);
+        offre.setStatut(statut);
+        offre.setCompetencesRequises(competencesRequises);
+
+            if (!file.isEmpty()) {
+                offre.setImage(file.getBytes());
+                offre.setNomImage(file.getOriginalFilename());
+            }
+
+            // Autres traitements pour datePublication
+            try {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = format.parse(String.valueOf(offre.getDatePublication()));
+                offre.setDatePublication(date);
+            } catch (ParseException e) {
+                // Gestion des erreurs de parsing de la date
+                response.put("status", "error");
+                response.put("message", "Format de date invalide.");
+                return response;
+            }
+
+            // Sauvegarder l'offre d'emploi
+            offreEmploiService.createOffre(offre);
+
+            response.put("status", "success");
+            return response;
+
+        }
+    }
+
 
