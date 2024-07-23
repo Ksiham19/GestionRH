@@ -1,13 +1,8 @@
 package com.example.gestionrh.URLControllers;
 
-import com.example.gestionrh.Entities.Candidat;
-import com.example.gestionrh.Entities.Candidature;
-import com.example.gestionrh.Entities.OffreEmploi;
-import com.example.gestionrh.Entities.ResponsableRH;
-import com.example.gestionrh.Services.CandidatService;
-import com.example.gestionrh.Services.CandidatureService;
-import com.example.gestionrh.Services.OffreEmploiService;
-import com.example.gestionrh.Services.ResponsableRHService;
+import com.example.gestionrh.Entities.*;
+import com.example.gestionrh.Services.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +18,15 @@ public class mappingCandiat {
     CandidatureService candidatureService;
     OffreEmploiService offreEmploiService;
     ResponsableRHService responsableRHService;
+    NotifiacationService notifiacationService;
 
-    public mappingCandiat(ResponsableRHService responsableRHService, CandidatService candidatService, OffreEmploiService offreEmploiService, CandidatureService candidatureService) {
+    public mappingCandiat(ResponsableRHService responsableRHService,
+                          NotifiacationService notifiacationService,CandidatService candidatService, OffreEmploiService offreEmploiService, CandidatureService candidatureService) {
         this.candidatService = candidatService;
         this.offreEmploiService = offreEmploiService;
         this.candidatureService = candidatureService;
         this.responsableRHService = responsableRHService;
+        this.notifiacationService=notifiacationService;
     }
 
     @GetMapping("/OffreEmploie")
@@ -161,7 +159,30 @@ public class mappingCandiat {
         return "error"; // Assurez-vous qu'il y a une vue error pour afficher les messages d'erreur
     }
 
-}
+    // Pour afficher les détails de la notification
+    @GetMapping("/notification/{id}")
+    public String viewNotificationDetails(@PathVariable Long id, Model model) {
+        Optional<Notification> notification = notifiacationService.getNotificationById(id);
+        if (notification.isPresent()) {
+            model.addAttribute("notification", notification.get());
+            return "notificationDetails"; // Nom de la vue HTML pour afficher les détails
+        } else {
+            model.addAttribute("error", "Notification non trouvée.");
+            return "error"; // Rediriger vers une page d'erreur si la notification n'existe pas
+        }
+    }
+
+
+    @PostMapping("/notification/delete")
+    @ResponseBody
+    public ResponseEntity<Void> deleteNotification(@RequestParam Long id) {
+        notifiacationService.deleteNotification(id);
+        return ResponseEntity.ok().build();
+    }
+// Redirigez vers une liste des notifications après suppression
+    }
+
+
 
 
 

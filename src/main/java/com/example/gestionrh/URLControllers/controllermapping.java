@@ -24,15 +24,19 @@ public class controllermapping {
     CandidatureService candidatureService;
     EntretienService entretienService;
     DemandeDeCongeService demandeDeCongeService;
+    NotifiacationService notifiacationService;
 
     public controllermapping(CandidatService candidatService,
-                             EntretienService entretienService,EmployeService employeService, ResponsableRHService responsableRHService ,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
+                             EntretienService entretienService,
+                             NotifiacationService notifiacationService,
+                             EmployeService employeService, ResponsableRHService responsableRHService ,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
         this.candidatService=candidatService;
         this.employeService=employeService;
         this.responsableRHService=responsableRHService;
         this.candidatureService=candidatureService;
         this.demandeDeCongeService=demandeDeCongeService;
         this.entretienService=entretienService;
+        this.notifiacationService=notifiacationService;
     }
 
 
@@ -65,6 +69,10 @@ public class controllermapping {
             if (candidat.isPresent()) {
                 Candidat candidatt = candidat.get();
                 model.addAttribute("candidatt", candidatt);
+                long nobreNotif = notifiacationService.countNotificationsByCandidatId(candidatt.getIdCandidat());
+                model.addAttribute("nombreNotif",nobreNotif);
+                List<Notification> notifications = notifiacationService.touteslesnotifications(candidatt.getIdCandidat());
+                model.addAttribute("notifications",notifications);
                 return "EspaceCandidat";
             }
         } else {
@@ -344,16 +352,17 @@ public class controllermapping {
 
     @PostMapping("/scheduleInterview")
     public String scheduleInterview(@RequestParam("idCandidature") Long idCandidature,
-                                                    @RequestParam("interviewDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEntretien,
-                                                    @RequestParam("interviewLocation") String lieu,
-                                                    @RequestParam("interviewNotes") String feedback) {
+                                    @RequestParam("interviewDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateEntretien,
+                                    @RequestParam("interviewLocation") String lieu,
+                                    @RequestParam("interviewNotes") String feedback, Model model) {
         try {
             Long responsableId = 1L; // ID du Responsable RH, changez-le selon vos besoins
             Optional<Candidature> candidatureOptional = candidatureService.getCandidatureById(idCandidature);
             Optional<ResponsableRH> responsableRHOptional = responsableRHService.getResponsableById(responsableId);
 
             if (!candidatureOptional.isPresent() || !responsableRHOptional.isPresent()) {
-                return ("Candidature ou Responsable RH non trouvé.");
+                model.addAttribute("errorMessage", "Candidature ou Responsable RH non trouvé.");
+                return "redirect:/page1/GestionCandidatures?error=true";
             }
 
             Candidature candidature = candidatureOptional.get();
@@ -365,13 +374,23 @@ public class controllermapping {
             entretien.setResponsableRH(responsableRH);
             entretien.setLieu(lieu);
             entretien.setFeedback(feedback);
-
             entretienService.createEntretien(entretien);
+
+            // Création d'une notification
+            Notification notification = new Notification();
+            notification.setCandidat(candidature.getCandidat());
+            notification.setTypeNotification("non_lues");
+            notification.setDateEnvoi(new Date()); // Date actuelle
+            notification.setMessage("Un entretien est planifié pour le " + dateEntretien + " à " + lieu + ". Notes: " + feedback);
+            notifiacationService.createNotification(notification);
+
             return "redirect:/page1/GestionCandidatures";
         } catch (Exception e) {
-            return ("Erreur lors de la planification de l'entretien.");
+            model.addAttribute("errorMessage", "Erreur lors de la planification de l'entretien.");
+            return "redirect:/page1/GestionCandidatures?error=true";
         }
     }
+
 
 
 }

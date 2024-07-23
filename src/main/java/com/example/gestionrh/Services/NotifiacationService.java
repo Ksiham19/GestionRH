@@ -21,7 +21,9 @@ public class NotifiacationService {
         return repository.findAll();
     }
 
-
+    public long countNotificationsByCandidatId(Long idCandidat) {
+        return repository.countByCandidatId(idCandidat);
+    }
     public void envoyerNotificationEmploye(Employe employe, String bulletin) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(employe.getEmail());
@@ -53,6 +55,10 @@ public class NotifiacationService {
 
     public List<Notification> getNotificationsByType(String type) {
         return repository.findByTypeNotification(type);
+    }
+
+    public List<Notification> touteslesnotifications(Long id){
+        return  repository.touteslesnotifications(id);
     }
     public boolean existsById(Long id) {
         return repository.existsById(id);
