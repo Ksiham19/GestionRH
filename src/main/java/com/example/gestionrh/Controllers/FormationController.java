@@ -45,7 +45,7 @@ public class FormationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFormation(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteFormation(@PathVariable Long id) throws Exception {
         if (!service.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

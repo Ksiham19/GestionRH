@@ -42,7 +42,7 @@ public class ParticipationForationController {
         participationFormationService.updateParticipation(id,participationFormation);
         return ResponseEntity.ok().body(participationFormation);
     }
-
+/*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteParticipationFormation(@PathVariable Long id) {
         if (!participationFormationService.existsById(id)) {
@@ -51,4 +51,6 @@ public class ParticipationForationController {
         participationFormationService.deleteParticipation(id);
         return ResponseEntity.noContent().build();
     }
+
+ */
 }

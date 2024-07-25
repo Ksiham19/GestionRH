@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de la Formation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+        }
+
+        .main-content h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .details img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Sidebar Menu -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+        </div>
+        <ul>
+            <li><a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="/page1/GestionCandidatures"><i class="fas fa-users"></i> Gestion des candidatures</a></li>
+            <li><a href="/page1/GestionEmployees"><i class="fas fa-user-tie"></i> Gestion des employés</a></li>
+            <li><a href="/page1/offresEmploies"><i class="fas fa-briefcase"></i> Gestion des Offres D'Emploie</a></li>
+            <li><a href="/page1/GestionConge"><i class="fas fa-calendar-check"></i> Gestion des demandes de congé</a></li>
+            <li><a href="/page1/GestionFormations"><i class="fas fa-chalkboard-teacher"></i> Gestion des Formations</a></li>
+            <li><a href="/page1/BulettinPaie"><i class="fas fa-file-invoice"></i> Demandes Des Bulettins De Paie</a></li>
+            <li><a href="/page1/profiladmin"><i class="fas fa-user-circle"></i> Profil</a></li>
+            <li><a href="/page1/deconnecter"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#changePasswordModal"><i class="fas fa-key"></i> Changer le mot de passe</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Détails de la Formation</h1>
+        <div class="details">
+            <img th:src="@{'data:image/jpeg;base64,' + ${formation.image}}" th:alt="${formation.nomFormation}">
+            <h2 th:text="${formation.nomFormation}"></h2>
+            <p th:text="${formation.description}"></p>
+            <p><strong>Date de début:</strong> <span th:text="${formation.dateDebut}"></span></p>
+            <p><strong>Date de fin:</strong> <span th:text="${formation.dateFin}"></span></p>
+        </div>
+
+        <h3>Participants</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Use Thymeleaf to dynamically generate rows -->
+            <tr th:each="participant : ${participants}">
+                <td>
+                    <img th:if="${participant.employe.image != null}"
+                         th:src="@{/images/{image}(image=${participant.employe.nomImage})}"
+                         th:alt="${participant.employe.nom}" />
+
+                </td>
+                <td th:text="${participant.employe.nom}"></td>
+                <td th:text="${participant.employe.prenom}"></td>
+                <td th:text="${participant.employe.email}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <!-- Delete Button -->
+        <form th:action="@{/page1/deleteFormation/{id}(id=${formation.idFormation})}" method="get" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette formation ? ');">
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+
+
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

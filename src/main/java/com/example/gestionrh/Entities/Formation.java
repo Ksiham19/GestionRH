@@ -16,10 +16,18 @@ public class Formation {
     private Date dateDebut;
     private Date dateFin;
 
+    private String nomImage;
+
+    @Lob
+    @Column(name = "image", columnDefinition = "LONGBLOB")
+    private byte[] image;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idResponsable")
     private ResponsableRH responsableRH;
 
     @OneToMany(mappedBy = "formation")
     private List<ParticipationFormation> participations;
+
+    private String statut;
 }

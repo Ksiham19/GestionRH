@@ -2,12 +2,12 @@ package com.example.gestionrh.URLControllers;
 
 import com.example.gestionrh.Entities.*;
 import com.example.gestionrh.Services.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -29,13 +30,15 @@ public class controllermapping {
     DemandeDeCongeService demandeDeCongeService;
     NotifiacationService notifiacationService;
     OffreEmploiService offreEmploiService;
+    FormationService formationService;
 
     public controllermapping(CandidatService candidatService,
                              EntretienService entretienService,
                              NotifiacationService notifiacationService,
                              EmployeService employeService,
                              OffreEmploiService offreEmploiService,
-                             ResponsableRHService responsableRHService ,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
+                             ResponsableRHService responsableRHService ,
+                             FormationService formationService,CandidatureService candidatureService,DemandeDeCongeService demandeDeCongeService) {
         this.candidatService=candidatService;
         this.employeService=employeService;
         this.responsableRHService=responsableRHService;
@@ -44,6 +47,7 @@ public class controllermapping {
         this.entretienService=entretienService;
         this.notifiacationService=notifiacationService;
         this.offreEmploiService=offreEmploiService;
+        this.formationService=formationService;
     }
 
 
@@ -108,7 +112,7 @@ public class controllermapping {
             ResponsableRH respo = respoOptional.get();
             model.addAttribute("respo", respo);
         } else {
-            // Handle the case where the ResponsableRH is not found (e.g., redirect to an error page or show a message)
+
             model.addAttribute("error", "Responsable RH non trouvé.");
         }
 
@@ -455,6 +459,70 @@ public class controllermapping {
             return response;
 
         }
+
+    @GetMapping("/GestionFormations")
+    public String GestionFormations(Model model){
+        List<Formation> formations = formationService.getFormationBystatut("nouveau");
+        model.addAttribute("Formations",formations);
+        return "gestionFormation";
     }
+    @GetMapping("/formationDetails/{idFormation}")
+    public String formationDetails(@PathVariable Long idFormation, Model model) {
+        Optional<Formation> formation = formationService.getFormationById(idFormation);
+        if (formation.isPresent()) {
+            List<ParticipationFormation> participants = formation.get().getParticipations();
+            model.addAttribute("formation", formation.get());
+            model.addAttribute("participants", participants);
+            return "formationDetails";
+        } else {
+            return "error/404"; // or some other error handling page
+        }
+    }
+
+
+    @GetMapping("/ajouterFormation")
+    public String showAddFormationForm(Model model) {
+        model.addAttribute("formation", new Formation());
+        return "ajouterFormation";
+    }
+
+    @PostMapping("/saveFormation")
+    public String saveFormation(@RequestParam("nomFormation") String nomFormation,
+                                @RequestParam("description") String description,
+                                @RequestParam("dateDebut") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateDebut,
+                                @RequestParam("dateFin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFin,
+                                @RequestParam("image") MultipartFile image) {
+        Formation formation = new Formation();
+        formation.setNomFormation(nomFormation);
+        formation.setDescription(description);
+        formation.setDateDebut(dateDebut);
+        formation.setDateFin(dateFin);
+        formation.setStatut("nouveau");
+        try {
+            if (!image.isEmpty()) {
+                formation.setImage(image.getBytes());
+                formation.setNomImage(image.getOriginalFilename());
+            }
+            formationService.createFormation(formation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/page1/GestionFormations";
+    }
+
+    @GetMapping("/deleteFormation/{id}")
+    public String deleteFormation(@PathVariable("id") Long id) {
+        try {
+            formationService.updateFormationStatus(id, "ancien");
+        } catch (EntityNotFoundException e) {
+            // Gérer le cas où la formation n'est pas trouvée
+            // Par exemple, rediriger vers une page d'erreur ou afficher un message
+            return "redirect:/errorPage";
+        }
+        return "redirect:/page1/GestionFormations";
+    }
+
+
+}
 
 

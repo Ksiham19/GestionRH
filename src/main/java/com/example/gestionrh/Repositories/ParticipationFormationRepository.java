@@ -7,6 +7,8 @@ import java.util.List;
 
 @Repository
 public interface ParticipationFormationRepository extends JpaRepository<ParticipationFormation, Long> {
-
     List<ParticipationFormation> findByEmployeIdEmploye(Long idEmploye);
-    List<ParticipationFormation> findByFormationIdFormation(Long idFormation);}
+    Long findByFormationIdFormation(Long idFormation);
+}
+
+

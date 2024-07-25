@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FormationRepository extends JpaRepository<Formation, Long> {
@@ -12,4 +13,6 @@ public interface FormationRepository extends JpaRepository<Formation, Long> {
     List<Formation> findByDescriptionContaining(String description);
     List<Formation> findByDateDebutBefore(Date date);
     List<Formation> findByDateFinAfter(Date date);
+
+    List<Formation> findBystatut(String statut);
 }
